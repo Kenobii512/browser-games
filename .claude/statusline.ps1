@@ -12,9 +12,13 @@ $loc  = if ($repo) { $repo } else { $data.cwd }
 
 $branch = ""
 $cwd = $data.cwd
-if ($cwd -and (Test-Path "$cwd\.git")) {
-    $branch = git -C $cwd symbolic-ref --short HEAD 2>$null
-    if (-not $branch) { $branch = git -C $cwd rev-parse --short HEAD 2>$null }
+if ($cwd) {
+    $branch = & "C:\Program Files\Git\bin\git.exe" -C $cwd symbolic-ref --short HEAD 2>$null
+    if ($LASTEXITCODE -ne 0 -or -not $branch) {
+        $branch = & "C:\Program Files\Git\bin\git.exe" -C $cwd rev-parse --short HEAD 2>$null
+        if ($LASTEXITCODE -ne 0) { $branch = "" }
+    }
+    if ($branch) { $branch = $branch.Trim() }
 }
 
 $remaining = $data.context_window.remaining_percentage
@@ -24,4 +28,4 @@ $out = "${cyan}${model}${reset} ${yellow}${loc}${reset}"
 if ($branch) { $out += " ${green}(${branch})${reset}" }
 if ($null -ne $remaining) { $out += " ${ctxColor}ctx:$([int]$remaining)%${reset}" }
 
-[Console]::Write($out)
+Write-Host $out
