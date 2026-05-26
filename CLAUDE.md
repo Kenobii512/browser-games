@@ -51,4 +51,14 @@ shooter/            — SECTOR ZERO top-down shooter
 
 ## Git Workflow
 
-This project uses Git with commits pushed to GitHub after every meaningful change. Commit messages follow the pattern `type: short description` (e.g. `feat:`, `fix:`, `chore:`).
+After completing any unit of work — a new feature, a bug fix, a refactor, or any meaningful change — **always commit and push to GitHub immediately**. Do not batch multiple unrelated changes into one commit. The goal is that the remote always reflects the latest working state so no progress is ever lost.
+
+Commit message format: `type: short description` where type is one of `feat`, `fix`, `refactor`, `chore`, or `docs`.
+
+```
+git add <files>
+git commit -m "feat: add shield power-up to player"
+git push
+```
+
+Push after every commit. Never leave committed work sitting locally unpushed.
